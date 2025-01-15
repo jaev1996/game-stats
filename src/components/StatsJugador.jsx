@@ -2,10 +2,18 @@
 import React, { useState } from 'react';
 import { elementos } from '../data/elementos';
 import Elemento from './Elemento';
+import BarraDeVida from './BarraDeVida';
 
 const StatsJugador = ({ jugador }) => {
+  const [vida, setVida] = useState(jugador.vida);
   const [nivelesElementos, setNivelesElementos] = useState(jugador.elementos || {});
 
+  const handleIncrement = () =>{
+    setVida(vida + 5);
+  }
+  const handleDecrement = () =>{
+    setVida(vida - 5);
+  }
   const handleElementoChange = (event) => { 
     const newElemento = event.target.value;
     setNivelesElementos({
@@ -63,6 +71,8 @@ const StatsJugador = ({ jugador }) => {
           </option> 
         ))}
       </select>
+
+      <BarraDeVida vida={vida} onIncrement={handleIncrement} onDecrement={handleDecrement} />
     </div>
   );
 };
