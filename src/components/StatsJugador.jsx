@@ -7,13 +7,21 @@ import BarraDeVida from './BarraDeVida';
 const StatsJugador = ({ jugador }) => {
   const [vida, setVida] = useState(jugador.vida);
   const [nivelesElementos, setNivelesElementos] = useState(jugador.elementos || {});
+  const [cantidad, setCantidad] = useState(0); // Nuevo estado para la cantidad específica
 
-  const handleIncrement = () =>{
-    setVida(vida + 5);
+  const handleIncrement = () => { 
+    setVida((prevVida) => Math.min(prevVida + 5, 200)); 
+  } 
+  const handleDecrement = () => { 
+    setVida((prevVida) => Math.max(prevVida - 5, -200)); 
+  } 
+  const handleIncrementSpecific = () => { 
+    setVida((prevVida) => Math.min(prevVida + parseInt(cantidad, 10), 200)); 
+  } 
+  const handleDecrementSpecific = () => { 
+    setVida((prevVida) => Math.max(prevVida - parseInt(cantidad, 10), -200)); 
   }
-  const handleDecrement = () =>{
-    setVida(vida - 5);
-  }
+
   const handleElementoChange = (event) => { 
     const newElemento = event.target.value;
     setNivelesElementos({
@@ -73,6 +81,28 @@ const StatsJugador = ({ jugador }) => {
       </select>
 
       <BarraDeVida vida={vida} onIncrement={handleIncrement} onDecrement={handleDecrement} />
+      
+      <div className="mt-2 flex items-center justify-center space-x-2">
+        <input 
+          id="cantidad"
+          type="number"
+          value={cantidad}
+          onChange={(e) => setCantidad(e.target.value)}
+          className="block w-20 pl-3 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          />
+        <button 
+          onClick={handleIncrementSpecific} 
+          className="bg-green-500 text-white px-3 py-1 rounded-md"
+        >
+          Sumar
+        </button>
+        <button 
+          onClick={handleDecrementSpecific} 
+          className="bg-red-500 text-white px-3 py-1 rounded-md"
+        >
+          Restar
+        </button>
+      </div>
     </div>
   );
 };
