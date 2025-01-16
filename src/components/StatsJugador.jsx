@@ -9,7 +9,10 @@ const StatsJugador = ({ jugador }) => {
   const [capacidadVida, setCapacidadVida] = useState('-200'); // Estado como cadena
   const [nivelesElementos, setNivelesElementos] = useState(jugador.elementos || {});
   const [cantidad, setCantidad] = useState(0); // Nuevo estado para la cantidad específica
-
+  const [name, setName] = useState(jugador.name);
+  const [dano, setDano] = useState(jugador.dano);
+  const [evasion, setEvasion] = useState(jugador.evasion);
+  const [armadura, setArmadura] = useState(jugador.armor);
   const handleVidaChange = (change) => {
     setVida((prevVida) => Math.min(Math.max(prevVida + change, capacidadVida), 200));
   }
@@ -43,14 +46,32 @@ const StatsJugador = ({ jugador }) => {
 
   return (
     <div className="p-4 border rounded-lg shadow-md bg-white">
-      <h2 className="text-xl font-bold">{jugador.name}</h2>
-      <p>Daño💥: {jugador.dano} // Evasión💨: {jugador.evasion} // Armor⛑: {jugador.armor} //
-        Cap. Vida💗: 
+      <h2 className="text-xl font-bold">{name}</h2>
+      <p>
+        Daño💥: <input
+          id="dano"
+          type="text"
+          value={dano}
+          onChange={(e) => setDano(e.target.value)}
+          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+        />  // Evasión💨: <input
+          id="evasion"
+          type="text"
+          value={evasion}
+          onChange={(e) => setEvasion(e.target.value)}
+          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+        />  // Armor⛑: <input
+          id="armadura"
+          type="text"
+          value={armadura}
+          onChange={(e) => setArmadura(e.target.value)}
+          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+        />  // Cap. Vida💗: 
         <input 
-          type="number" 
+          type="text" 
           value={capacidadVida} 
           onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
-          className="ml-2 w-20 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          className="w-20 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
         />
 
       </p>
@@ -60,7 +81,6 @@ const StatsJugador = ({ jugador }) => {
       </p>
 
       <p>
-        Elementos:
         <div className="flex flex-wrap">
           {Object.keys(nivelesElementos).map((key) => (
             <Elemento
