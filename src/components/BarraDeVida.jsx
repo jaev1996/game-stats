@@ -9,8 +9,8 @@ if (vida >= 100) {
     return `linear-gradient(to right, red ${-vida / 2}%, yellow 100%)`; 
 } };
 
-const BarraDeVida = ({ vida, onIncrement, onDecrement }) => {
-    const porcentajeVida = (vida + 200) / 4;
+const BarraDeVida = ({ vida, capacidadVida, onIncrement, onDecrement }) => {
+  const porcentajeVida = ((vida - capacidadVida) / (200 - capacidadVida)) * 100;
   return (
     <>
     <div className="w-full bg-gray-300 rounded-full h-6">

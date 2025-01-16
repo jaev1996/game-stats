@@ -10,20 +10,15 @@ const StatsJugador = ({ jugador }) => {
   const [nivelesElementos, setNivelesElementos] = useState(jugador.elementos || {});
   const [cantidad, setCantidad] = useState(0); // Nuevo estado para la cantidad específica
 
-  const handleIncrement = () => {
-    setVida((prevVida) => Math.min(prevVida + 5, 200));
-  }
-  const handleDecrement = () => {
-    setVida((prevVida) => Math.max(prevVida - 5, parseInt(capacidadVida, 10) || -200));
+  const handleVidaChange = (change) => {
+    setVida((prevVida) => Math.min(Math.max(prevVida + change, capacidadVida), 200));
   }
 
-  const handleIncrementSpecific = () => {
-    setVida((prevVida) => Math.min(prevVida + parseInt(cantidad, 10), 200));
-  }
+  const handleIncrement = () => handleVidaChange(5);
+  const handleDecrement = () => handleVidaChange(-5);
+  const handleIncrementSpecific = () => handleVidaChange(parseInt(cantidad, 10));
+  const handleDecrementSpecific = () => handleVidaChange(-parseInt(cantidad, 10));
 
-  const handleDecrementSpecific = () => {
-    setVida((prevVida) => Math.max(prevVida - parseInt(cantidad, 10), parseInt(capacidadVida, 10) || -200));
-  }
 
   const handleElementoChange = (event) => {
     const newElemento = event.target.value;
@@ -96,7 +91,7 @@ const StatsJugador = ({ jugador }) => {
         ))}
       </select>
 
-      <BarraDeVida vida={vida} onIncrement={handleIncrement} onDecrement={handleDecrement} />
+      <BarraDeVida vida={vida} capacidadVida={parseInt(capacidadVida, 10)} onIncrement={handleIncrement} onDecrement={handleDecrement} />
 
       <div className="mt-4 flex items-center justify-center space-x-4">
         <input
