@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { elementos } from '../data/elementos';
 import Elemento from './Elemento';
 import BarraDeVida from './BarraDeVida';
+import tomoeImage from '../assets/3-tomoe.png';
+
 
 const StatsJugador = ({ jugador }) => {
   const [vida, setVida] = useState(jugador.vida);
@@ -13,6 +15,9 @@ const StatsJugador = ({ jugador }) => {
   const [dano, setDano] = useState(jugador.dano);
   const [evasion, setEvasion] = useState(jugador.evasion);
   const [armadura, setArmadura] = useState(jugador.armor);
+  const [ojos, setOjos] = useState(2);
+  const [brazos, setBrazos] = useState(2);
+  const [sharinganLvl, setSharinganLvl] = useState(0);
   const handleVidaChange = (change) => {
     setVida((prevVida) => Math.min(Math.max(prevVida + change, capacidadVida), 200));
   }
@@ -75,10 +80,28 @@ const StatsJugador = ({ jugador }) => {
         />
 
       </p>
-
       <p>
-        
+          Ojos👁: <input
+          id="ojos"
+          type="number"
+          value={ojos}
+          onChange={(e) => setOjos(e.target.value)}
+          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+        />  // Brazos🦾: <input
+          id="brazos"
+          type="text"
+          value={brazos}
+          onChange={(e) => setBrazos(e.target.value)}
+          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+        />  // Sharingan: <img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
+          id="sharinganLvl"
+          type="number"
+          value={sharinganLvl}
+          onChange={(e) => setSharinganLvl(e.target.value)}
+          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+        />
       </p>
+
 
       <p>
         <div className="flex flex-wrap">
