@@ -67,58 +67,74 @@ const StatsJugador = ({ jugador }) => {
   return (
     <div className="p-4 border rounded-lg shadow-md bg-white">
       <h2 className="text-xl font-bold">{name}</h2>
-      <p>
-        Daño💥: <input
-          id="dano"
-          type="text"
-          value={dano}
-          onChange={(e) => setDano(e.target.value)}
-          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />  // Evasión💨: <input
-          id="evasion"
-          type="text"
-          value={evasion}
-          onChange={(e) => setEvasion(e.target.value)}
-          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />  // Armor⛑: <input
-          id="armadura"
-          type="text"
-          value={armadura}
-          onChange={(e) => setArmadura(e.target.value)}
-          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />
-
-      </p>
-      <p>
-        Cap.Vida💗:  
-        <input 
-          type="text" 
-          value={capacidadVida} 
-          onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
-          className="w-20 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />  // Ojos👁: <input
-          id="ojos"
-          type="number"
-          value={ojos}
-          onChange={(e) => setOjos(e.target.value)}
-          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />
-          // Brazos🦾: <input
-          id="brazos"
-          type="text"
-          value={brazos}
-          onChange={(e) => setBrazos(e.target.value)}
-          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        /> Sharingan: <img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
-          id="sharinganLvl"
-          type="number"
-          value={sharinganLvl}
-          onChange={(e) => setSharinganLvl(e.target.value)}
-          className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div>
+          Daño💥: <input
+            id="dano"
+            type="text"
+            value={dano}
+            onChange={(e) => setDano(e.target.value)}
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            />
+        </div>
+        <div>
+          Evasión💨: <input
+            id="evasion"
+            type="text"
+            value={evasion}
+            onChange={(e) => setEvasion(e.target.value)}
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            />
+        </div>
+        <div>
+          Armor⛑: <input
+            id="armadura"
+            type="text"
+            value={armadura}
+            onChange={(e) => setArmadura(e.target.value)}
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          />
+        </div>
+        <div>
+          Cap.Vida💗:  
+          <input 
+            type="text" 
+            value={capacidadVida} 
+            onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
+            className="w-20 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          />
+        </div>
+        <div>
+          Ojos👁: <input
+            id="ojos"
+            type="number"
+            value={ojos}
+            onChange={(e) => setOjos(e.target.value)}
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          />
+        </div>
         
-      
-      </p>
+        <div>
+          Brazos🦾:<input
+            id="brazos"
+            type="text"
+            value={brazos}
+            onChange={(e) => setBrazos(e.target.value)}
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          />
+        </div>
+        <div>
+        Sharingan:<img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
+            id="sharinganLvl"
+            type="number"
+            value={sharinganLvl}
+            onChange={(e) => setSharinganLvl(e.target.value)}
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+          />
+        </div>
+
+      </div>
+     
       <div className='flex flex-wrap justify-center align-center'>
         <select
             id="clan-select"
