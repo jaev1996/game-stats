@@ -5,6 +5,8 @@ import Elemento from './Elemento';
 import BarraDeVida from './BarraDeVida';
 import tomoeImage from '../assets/3-tomoe.png';
 
+const clanes = ['Kaguya', 'Uzumaki', 'Hyuga', 'Power', 'Senju', 'Uchiha'];
+
 
 const StatsJugador = ({ jugador }) => {
   const [vida, setVida] = useState(jugador.vida);
@@ -18,6 +20,8 @@ const StatsJugador = ({ jugador }) => {
   const [ojos, setOjos] = useState(2);
   const [brazos, setBrazos] = useState(2);
   const [sharinganLvl, setSharinganLvl] = useState(0);
+  const [selectedClanes, setSelectedClanes] = useState([]); // Estado para los clanes seleccionados
+
   const handleVidaChange = (change) => {
     setVida((prevVida) => Math.min(Math.max(prevVida + change, capacidadVida), 200));
   }
@@ -49,6 +53,17 @@ const StatsJugador = ({ jugador }) => {
     setNivelesElementos(updatedElementos);
   };
 
+  const handleClanChange = (event) => {
+    const newClan = event.target.value;
+    if (newClan && !selectedClanes.includes(newClan)) {
+      setSelectedClanes([...selectedClanes, newClan]);
+    }
+  };
+
+  const eliminarClan = (clan) => {
+    setSelectedClanes(selectedClanes.filter(c => c !== clan));
+  };
+
   return (
     <div className="p-4 border rounded-lg shadow-md bg-white">
       <h2 className="text-xl font-bold">{name}</h2>
@@ -71,36 +86,69 @@ const StatsJugador = ({ jugador }) => {
           value={armadura}
           onChange={(e) => setArmadura(e.target.value)}
           className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />  // Cap. Vida💗: 
+        />
+
+      </p>
+      <p>
+        Cap.Vida💗:  
         <input 
           type="text" 
           value={capacidadVida} 
           onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
           className="w-20 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />
-
-      </p>
-      <p>
-          Ojos👁: <input
+        />  // Ojos👁: <input
           id="ojos"
           type="number"
           value={ojos}
           onChange={(e) => setOjos(e.target.value)}
           className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />  // Brazos🦾: <input
+        />
+          // Brazos🦾: <input
           id="brazos"
           type="text"
           value={brazos}
           onChange={(e) => setBrazos(e.target.value)}
           className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />  // Sharingan: <img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
+        /> Sharingan: <img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
           id="sharinganLvl"
           type="number"
           value={sharinganLvl}
           onChange={(e) => setSharinganLvl(e.target.value)}
           className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
         />
+        
+      
       </p>
+      <div className='flex flex-wrap justify-center align-center'>
+        <select
+            id="clan-select"
+            onChange={handleClanChange}
+            className="w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mt-1 ml-2"
+          >
+            <option value="">Kekkei Genkai</option>
+            {clanes.map((clan) => (
+              <option key={clan} value={clan}>
+                {clan}
+              </option>
+            ))}
+        </select>
+          {selectedClanes.map((clan) => (
+            <div key={clan} className="text-xl">
+              <input
+                type="text"
+                value={clan}
+                readOnly
+                className="w-16 pl-2 py-1 mx-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+              />
+              <button
+                onClick={() => eliminarClan(clan)}
+                className="bg-white-500 text-white mt-1 rounded-md"
+              >
+              ❌
+              </button>
+            </div>
+          ))}
+      </div>
 
 
       <p>
