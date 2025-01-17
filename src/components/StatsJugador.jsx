@@ -4,9 +4,23 @@ import { elementos } from '../data/elementos';
 import Elemento from './Elemento';
 import BarraDeVida from './BarraDeVida';
 import tomoeImage from '../assets/3-tomoe.png';
+import hyugaImage from '../assets/hyuga.png';
+import uchihaImage from '../assets/uchiha.png';
+import uzumakiImage from '../assets/uzumaki.png';
+import senjuImage from '../assets/senju.png';
+import kaguyaImage from '../assets/kaguya.png';
+import powerImage from '../assets/poder.png';
+
 
 const clanes = ['Kaguya', 'Uzumaki', 'Hyuga', 'Power', 'Senju', 'Uchiha'];
-
+const clanImages = {
+  Kaguya: kaguyaImage,
+  Uzumaki: uzumakiImage,
+  Hyuga: hyugaImage,
+  Power: powerImage,
+  Senju: senjuImage,
+  Uchiha: uchihaImage
+  };
 
 const StatsJugador = ({ jugador }) => {
   const [vida, setVida] = useState(jugador.vida);
@@ -96,12 +110,12 @@ const StatsJugador = ({ jugador }) => {
           />
         </div>
         <div>
-          Cap.Vida💗:  
+          Vida💗:  
           <input 
             type="text" 
             value={capacidadVida} 
             onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
-            className="w-20 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-2/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
         </div>
         <div>
@@ -124,7 +138,7 @@ const StatsJugador = ({ jugador }) => {
           />
         </div>
         <div>
-        Sharingan:<img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
+        Shar.<img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
             id="sharinganLvl"
             type="number"
             value={sharinganLvl}
@@ -149,19 +163,13 @@ const StatsJugador = ({ jugador }) => {
             ))}
         </select>
           {selectedClanes.map((clan) => (
-            <div key={clan} className="text-xl">
-              <input
-                type="text"
-                value={clan}
-                readOnly
-                className="w-16 pl-2 py-1 mx-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-              />
-              <button
+            <div key={clan} className="text-xl mt-2">
+              <img
+                src={clanImages[clan]}
+                alt={clan}
+                className="w-6 h-6 mx-2"
                 onClick={() => eliminarClan(clan)}
-                className="bg-white-500 text-white mt-1 rounded-md"
-              >
-              ❌
-              </button>
+              />
             </div>
           ))}
       </div>
