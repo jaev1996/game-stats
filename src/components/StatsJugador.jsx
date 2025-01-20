@@ -10,6 +10,8 @@ import uzumakiImage from '../assets/uzumaki.png';
 import senjuImage from '../assets/senju.png';
 import kaguyaImage from '../assets/kaguya.png';
 import powerImage from '../assets/poder.png';
+import ContadorPasos from './ContadorPasos';
+import ModalMisiones from './ModalMisiones';
 
 
 const clanes = ['Kaguya', 'Uzumaki', 'Hyuga', 'Power', 'Senju', 'Uchiha'];
@@ -22,15 +24,14 @@ const clanImages = {
   Uchiha: uchihaImage
   };
 
-const StatsJugador = ({ jugador }) => {
-  const [vida, setVida] = useState(jugador.vida);
+const StatsJugador = ({ playerNames }) => {
+  const [vida, setVida] = useState(0);
   const [capacidadVida, setCapacidadVida] = useState('-200'); // Estado como cadena
-  const [nivelesElementos, setNivelesElementos] = useState(jugador.elementos || {});
+  const [nivelesElementos, setNivelesElementos] = useState({});
   const [cantidad, setCantidad] = useState(0); // Nuevo estado para la cantidad específica
-  const [name, setName] = useState(jugador.name);
-  const [dano, setDano] = useState(jugador.dano);
-  const [evasion, setEvasion] = useState(jugador.evasion);
-  const [armadura, setArmadura] = useState(jugador.armor);
+  const [dano, setDano] = useState(0);
+  const [evasion, setEvasion] = useState(0);
+  const [armadura, setArmadura] = useState(0);
   const [ojos, setOjos] = useState(2);
   const [brazos, setBrazos] = useState(2);
   const [sharinganLvl, setSharinganLvl] = useState(0);
@@ -79,9 +80,22 @@ const StatsJugador = ({ jugador }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-md bg-white">
-      <h2 className="text-xl font-bold">{name}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <>
+
+    <h1 className="text-2xl font-bold mb-4">Estadísticas del Juego</h1> 
+    <ContadorPasos />
+    <div className='flex flex-row justify-center'>
+      <ModalMisiones name="Cazar Bestias" />
+      <ModalMisiones name="Ejecucion Ninjas" />
+      <ModalMisiones name="Pasos en Conjunto" />
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+   
+
+    {playerNames.map((name, index) => (
+      <div className="p-4 border rounded-lg shadow-md bg-white" key={index}>
+        <h3 className='text-xl font-bold'>{name}</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         <div>
           Daño💥: <input
             id="dano"
@@ -107,25 +121,17 @@ const StatsJugador = ({ jugador }) => {
             value={armadura}
             onChange={(e) => setArmadura(e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-          />
+            />
         </div>
+        
         <div>
-          Vida💗:  
-          <input 
-            type="text" 
-            value={capacidadVida} 
-            onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
-            className="w-2/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-          />
-        </div>
-        <div>
-          Ojos👁: <input
+          Ojos  👁: <input
             id="ojos"
             type="number"
             value={ojos}
             onChange={(e) => setOjos(e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-          />
+            />
         </div>
         
         <div>
@@ -144,6 +150,15 @@ const StatsJugador = ({ jugador }) => {
             value={sharinganLvl}
             onChange={(e) => setSharinganLvl(e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            />
+        </div>
+        <div>
+          Vida💗:  
+          <input 
+            type="text" 
+            value={capacidadVida} 
+            onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
+            className="w-2/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
         </div>
 
@@ -154,7 +169,7 @@ const StatsJugador = ({ jugador }) => {
             id="clan-select"
             onChange={handleClanChange}
             className="w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mt-1 ml-2"
-          >
+            >
             <option value="">Kekkei Genkai</option>
             {clanes.map((clan) => (
               <option key={clan} value={clan}>
@@ -163,48 +178,42 @@ const StatsJugador = ({ jugador }) => {
             ))}
         </select>
           {selectedClanes.map((clan) => (
-            <div key={clan} className="text-xl mt-2">
+            <div key={clan} className="text-xs mt-2">
               <img
                 src={clanImages[clan]}
                 alt={clan}
                 className="w-6 h-6 mx-2"
                 onClick={() => eliminarClan(clan)}
-              />
+                />
             </div>
           ))}
       </div>
-
-
-      <p>
-        <div className="flex flex-wrap">
-          {Object.keys(nivelesElementos).map((key) => (
-            <Elemento
-              key={key}
-              elemento={elementos[key]}
-              nivel={nivelesElementos[key]}
-              onIncrement={() => incrementarNivel(key)}
-              onDelete={() => eliminarElemento(key)}
-            />
-          ))}
-        </div>
-      </p>
-
-      <label htmlFor="elemento-select" className="block mt-2 w-1/4">
-        Agregar un elemento:
-      </label>
+      <div className='flex justify-center align-center'>
 
       <select
         id="elemento-select"
         onChange={handleElementoChange}
-        className="mt-1 block w-1/4 pl-3 pr-10 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mb-2 ml-2"
-      >
-        <option value="">Selecciona uno</option>
+        className="mt-1 w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mb-2 ml-2"
+        >
+        <option value="">Elementos</option>
         {Object.keys(elementos).map((key) => (
-          <option key={key} value={key}>
+          <option className="text-xs" key={key} value={key}>
             {elementos[key]} {key}
           </option>
         ))}
       </select>
+      </div>
+      <div className="flex flex-wrap justify-center align-center">
+        {Object.keys(nivelesElementos).map((key) => (
+          <Elemento
+            key={key}
+            elemento={elementos[key]}
+            nivel={nivelesElementos[key]}
+            onIncrement={() => incrementarNivel(key)}
+            onDelete={() => eliminarElemento(key)}
+          />
+        ))}
+      </div>
 
       <BarraDeVida vida={vida} capacidadVida={parseInt(capacidadVida, 10)} onIncrement={handleIncrement} onDecrement={handleDecrement} />
 
@@ -215,21 +224,24 @@ const StatsJugador = ({ jugador }) => {
           value={cantidad}
           onChange={(e) => setCantidad(e.target.value)}
           className="mt-1 block w-20 pl-2 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />
+          />
         <button
           onClick={handleIncrementSpecific}
           className="bg-green-500 text-white px-3 py-1 rounded-md"
-        >
-          Sanar
+          >
+          💚
         </button>
         <button
           onClick={handleDecrementSpecific}
           className="bg-red-500 text-white px-3 py-1 rounded-md"
         >
-          Dañar
+          🔪
         </button>
       </div>
+      </div>
+    ))}
     </div>
+    </>
   );
 };
 
