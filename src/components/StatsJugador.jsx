@@ -24,7 +24,7 @@ const clanImages = {
   Uchiha: uchihaImage
   };
 
-const StatsJugador = ({ playerNames }) => {
+const StatsJugador = ({ jugadores }) => {
   const [vida, setVida] = useState(0);
   const [capacidadVida, setCapacidadVida] = useState('-200'); // Estado como cadena
   const [nivelesElementos, setNivelesElementos] = useState({});
@@ -36,10 +36,18 @@ const StatsJugador = ({ playerNames }) => {
   const [brazos, setBrazos] = useState(2);
   const [sharinganLvl, setSharinganLvl] = useState(0);
   const [selectedClanes, setSelectedClanes] = useState([]); // Estado para los clanes seleccionados
-
+  
+  
+  const [players, setPlayers] = useState(jugadores);
   const handleVidaChange = (change) => {
     setVida((prevVida) => Math.min(Math.max(prevVida + change, capacidadVida), 200));
   }
+
+  const handlePlayerChange = (index, field, value) => {
+    const newPlayers = [...players];
+    newPlayers[index][field] = value;
+    setPlayers(newPlayers);
+  };
 
   const handleIncrement = () => handleVidaChange(5);
   const handleDecrement = () => handleVidaChange(-5);
@@ -92,16 +100,16 @@ const StatsJugador = ({ playerNames }) => {
     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
    
 
-    {playerNames.map((name, index) => (
+    {players.map((player, index) => (
       <div className="p-4 border rounded-lg shadow-md bg-white" key={index}>
-        <h3 className='text-xl font-bold'>{name}</h3>
+        <h3 className='text-xl font-bold'>{player.name}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         <div>
           Daño💥: <input
             id="dano"
             type="text"
-            value={dano}
-            onChange={(e) => setDano(e.target.value)}
+            value={player.dano}
+            onChange={(e) => handlePlayerChange(index, 'dano', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
@@ -110,7 +118,7 @@ const StatsJugador = ({ playerNames }) => {
             id="evasion"
             type="text"
             value={evasion}
-            onChange={(e) => setEvasion(e.target.value)}
+            onChange={(e) => handlePlayerChange(index, 'evasion', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
@@ -119,7 +127,7 @@ const StatsJugador = ({ playerNames }) => {
             id="armadura"
             type="text"
             value={armadura}
-            onChange={(e) => setArmadura(e.target.value)}
+            onChange={(e) => handlePlayerChange(index, 'armadura', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
@@ -129,7 +137,7 @@ const StatsJugador = ({ playerNames }) => {
             id="ojos"
             type="number"
             value={ojos}
-            onChange={(e) => setOjos(e.target.value)}
+            onChange={(e) => handlePlayerChange(index, 'ojos', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
@@ -139,7 +147,7 @@ const StatsJugador = ({ playerNames }) => {
             id="brazos"
             type="text"
             value={brazos}
-            onChange={(e) => setBrazos(e.target.value)}
+            onChange={(e) => handlePlayerChange(index, 'brazos', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
         </div>
@@ -148,7 +156,7 @@ const StatsJugador = ({ playerNames }) => {
             id="sharinganLvl"
             type="number"
             value={sharinganLvl}
-            onChange={(e) => setSharinganLvl(e.target.value)}
+            onChange={(e) => handlePlayerChange(index, 'sharinganLvl', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
@@ -157,7 +165,7 @@ const StatsJugador = ({ playerNames }) => {
           <input 
             type="text" 
             value={capacidadVida} 
-            onChange={(e) => setCapacidadVida(e.target.value)} // No convertimos aquí
+            onChange={(e) => handlePlayerChange(index, 'capvida', e.target.value)} // No convertimos aquí
             className="w-2/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
         </div>

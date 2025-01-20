@@ -1,29 +1,42 @@
 import React, { useState } from 'react';
 import StatsJugador from './StatsJugador';
+import { elementos } from '../data/elementos';
 
 const GameSetup = () => {
   const [numPlayers, setNumPlayers] = useState(0);
-  const [playerNames, setPlayerNames] = useState([]);
+  const [players, setPlayers] = useState([]);
   const [gameStarted, setGameStarted] = useState(false);
 
   const handleNumPlayersChange = (e) => {
-    setNumPlayers(parseInt(e.target.value, 10));
-    setPlayerNames(Array(parseInt(e.target.value, 10)).fill(''));
+    const num = parseInt(e.target.value, 10);
+    setNumPlayers(num);
+    setPlayers(Array(num).fill().map(() => ({
+      name: '',
+      vida: 0,
+      capvida: -200,
+      dano: 0,
+      evasion: 0,
+      armadura: 0,
+      ojos: 2,
+      brazos: 2,
+      elemento: [],
+      clan: [],	
+      sharinganLvl: 0
+    })));
   };
 
-  const handlePlayerNameChange = (index, e) => {
-    const newPlayerNames = [...playerNames];
-    newPlayerNames[index] = e.target.value;
-    setPlayerNames(newPlayerNames);
+  const handlePlayerChange = (index, field, value) => {
+    const newPlayers = [...players];
+    newPlayers[index][field] = value;
+    setPlayers(newPlayers);
   };
-
   const startGame = () => {
     setGameStarted(true);
   };
 
   if (gameStarted) {
     return (
-        <StatsJugador playerNames={playerNames} />
+        <StatsJugador jugadores={players} />
     );
   }
 
@@ -40,14 +53,14 @@ const GameSetup = () => {
           className="w-20"
         />
       </div>
-      {playerNames.map((name, index) => (
+      {players.map((player, index) => (
         <div key={index}>
           <label htmlFor={`player-name-${index}`}>Player {index + 1} Name:</label>
           <input
             type="text"
             id={`player-name-${index}`}
-            value={name}
-            onChange={(e) => handlePlayerNameChange(index, e)}
+            value={player.name}
+            onChange={(e) => handlePlayerChange(index, 'name', e.target.value)}
             className="ml-2"
           />
         </div>
