@@ -25,66 +25,60 @@ const clanImages = {
   };
 
 const StatsJugador = ({ jugadores }) => {
-  const [vida, setVida] = useState(0);
-  const [capacidadVida, setCapacidadVida] = useState('-200'); // Estado como cadena
-  const [nivelesElementos, setNivelesElementos] = useState({});
-  const [cantidad, setCantidad] = useState(0); // Nuevo estado para la cantidad específica
-  const [dano, setDano] = useState(0);
-  const [evasion, setEvasion] = useState(0);
-  const [armadura, setArmadura] = useState(0);
-  const [ojos, setOjos] = useState(2);
-  const [brazos, setBrazos] = useState(2);
-  const [sharinganLvl, setSharinganLvl] = useState(0);
-  const [selectedClanes, setSelectedClanes] = useState([]); // Estado para los clanes seleccionados
-  
-  
-  const [players, setPlayers] = useState(jugadores);
-  const handleVidaChange = (change) => {
-    setVida((prevVida) => Math.min(Math.max(prevVida + change, capacidadVida), 200));
-  }
 
+  const [players, setPlayers] = useState(jugadores);
+  const handleVidaChange = (index, change) => {
+    const newPlayers = [...players];
+    newPlayers[index].vida = Math.min(Math.max(newPlayers[index].vida + change, newPlayers[index].capvida), 200);
+    setPlayers(newPlayers);
+  };
+
+  const handleIncrement = (index) => handleVidaChange(index, 5);
+  const handleDecrement = (index) => handleVidaChange(index, -5);
+  const handleIncrementSpecific = (index, cantidad) => handleVidaChange(index, parseInt(cantidad, 10));
+  const handleDecrementSpecific = (index, cantidad) => handleVidaChange(index, -parseInt(cantidad, 10));
+  
   const handlePlayerChange = (index, field, value) => {
     const newPlayers = [...players];
     newPlayers[index][field] = value;
     setPlayers(newPlayers);
   };
 
-  const handleIncrement = () => handleVidaChange(5);
-  const handleDecrement = () => handleVidaChange(-5);
-  const handleIncrementSpecific = () => handleVidaChange(parseInt(cantidad, 10));
-  const handleDecrementSpecific = () => handleVidaChange(-parseInt(cantidad, 10));
-
-
-  const handleElementoChange = (event) => {
+  const handleElementoChange = (index) => (event) => {
     const newElemento = event.target.value;
-    setNivelesElementos({
-      ...nivelesElementos,
-      [newElemento]: nivelesElementos[newElemento] || 1
-    });
+    const newPlayers = [...players];
+    if (!newPlayers[index].nivelesElementos) {
+      newPlayers[index].nivelesElementos = {};
+    }
+    newPlayers[index].nivelesElementos[newElemento] = newPlayers[index].nivelesElementos[newElemento] || 1;
+    setPlayers(newPlayers);
   };
 
-  const incrementarNivel = (elemento) => {
-    setNivelesElementos({
-      ...nivelesElementos,
-      [elemento]: (nivelesElementos[elemento] || 1) + 1
-    });
+  const incrementarNivel = (index, elemento) => {
+    const newPlayers = [...players];
+    newPlayers[index].nivelesElementos[elemento] = (newPlayers[index].nivelesElementos[elemento] || 1) + 1;
+    setPlayers(newPlayers);
   };
 
-  const eliminarElemento = (elemento) => {
-    const updatedElementos = { ...nivelesElementos };
-    delete updatedElementos[elemento];
-    setNivelesElementos(updatedElementos);
+  const eliminarElemento = (index, elemento) => {
+    const newPlayers = [...players];
+    delete newPlayers[index].nivelesElementos[elemento];
+    setPlayers(newPlayers);
   };
 
-  const handleClanChange = (event) => {
+  const handleClanChange = (index) => (event) => {
     const newClan = event.target.value;
-    if (newClan && !selectedClanes.includes(newClan)) {
-      setSelectedClanes([...selectedClanes, newClan]);
+    const newPlayers = [...players];
+    if (newClan && !newPlayers[index].clan.includes(newClan)) {
+      newPlayers[index].clan = [...newPlayers[index].clan, newClan];
+      setPlayers(newPlayers);
     }
   };
 
-  const eliminarClan = (clan) => {
-    setSelectedClanes(selectedClanes.filter(c => c !== clan));
+  const eliminarClan = (index, clanToRemove) => {
+    const newPlayers = [...players];
+    newPlayers[index].clan = newPlayers[index].clan.filter(c => c !== clanToRemove);
+    setPlayers(newPlayers);
   };
 
   return (
@@ -117,7 +111,7 @@ const StatsJugador = ({ jugadores }) => {
           Evasión💨: <input
             id="evasion"
             type="text"
-            value={evasion}
+            value={player.evasion}
             onChange={(e) => handlePlayerChange(index, 'evasion', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
@@ -126,7 +120,7 @@ const StatsJugador = ({ jugadores }) => {
           Armor⛑: <input
             id="armadura"
             type="text"
-            value={armadura}
+            value={player.armadura}
             onChange={(e) => handlePlayerChange(index, 'armadura', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
@@ -136,7 +130,7 @@ const StatsJugador = ({ jugadores }) => {
           Ojos  👁: <input
             id="ojos"
             type="number"
-            value={ojos}
+            value={player.ojos}
             onChange={(e) => handlePlayerChange(index, 'ojos', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
@@ -146,7 +140,7 @@ const StatsJugador = ({ jugadores }) => {
           Brazos🦾:<input
             id="brazos"
             type="text"
-            value={brazos}
+            value={player.brazos}
             onChange={(e) => handlePlayerChange(index, 'brazos', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
@@ -155,7 +149,7 @@ const StatsJugador = ({ jugadores }) => {
         Shar.<img src={tomoeImage} alt="3-tomoe" className="inline-block w-6 h-6 mr-2" /><input
             id="sharinganLvl"
             type="number"
-            value={sharinganLvl}
+            value={player.sharinganLvl}
             onChange={(e) => handlePlayerChange(index, 'sharinganLvl', e.target.value)}
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
@@ -164,7 +158,7 @@ const StatsJugador = ({ jugadores }) => {
           Vida💗:  
           <input 
             type="text" 
-            value={capacidadVida} 
+            value={player.capvida} 
             onChange={(e) => handlePlayerChange(index, 'capvida', e.target.value)} // No convertimos aquí
             className="w-2/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
@@ -175,7 +169,7 @@ const StatsJugador = ({ jugadores }) => {
       <div className='flex flex-wrap justify-center align-center'>
         <select
             id="clan-select"
-            onChange={handleClanChange}
+            onChange={handleClanChange(index)}
             className="w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mt-1 ml-2"
             >
             <option value="">Kekkei Genkai</option>
@@ -185,66 +179,65 @@ const StatsJugador = ({ jugadores }) => {
               </option>
             ))}
         </select>
-          {selectedClanes.map((clan) => (
-            <div key={clan} className="text-xs mt-2">
-              <img
-                src={clanImages[clan]}
-                alt={clan}
-                className="w-6 h-6 mx-2"
-                onClick={() => eliminarClan(clan)}
-                />
-            </div>
-          ))}
+        {console.log(player.clan)}
+        {player.clan.map((clan) => (
+          <div key={clan} className="text-xs mt-2">
+            <img
+              src={clanImages[clan]}
+              alt={clan}
+              className="w-6 h-6 mx-2"
+              onClick={() => eliminarClan(index, clan)}
+            />
+          </div>
+        ))}
       </div>
       <div className='flex justify-center align-center'>
-
-      <select
-        id="elemento-select"
-        onChange={handleElementoChange}
-        className="mt-1 w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mb-2 ml-2"
+        <select
+          id="elemento-select"
+          onChange={handleElementoChange(index)}
+          className="mt-1 w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mb-2 ml-2"
         >
-        <option value="">Elementos</option>
-        {Object.keys(elementos).map((key) => (
-          <option className="text-xs" key={key} value={key}>
-            {elementos[key]} {key}
-          </option>
-        ))}
-      </select>
+          <option value="">Elementos</option>
+          {Object.keys(elementos).map((key) => (
+            <option className="text-xs" key={key} value={key}>
+              {elementos[key]} {key}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="flex flex-wrap justify-center align-center">
-        {Object.keys(nivelesElementos).map((key) => (
+        {player.nivelesElementos && Object.keys(player.nivelesElementos).map((key) => (
           <Elemento
             key={key}
             elemento={elementos[key]}
-            nivel={nivelesElementos[key]}
-            onIncrement={() => incrementarNivel(key)}
-            onDelete={() => eliminarElemento(key)}
+            nivel={player.nivelesElementos[key]}
+            onIncrement={() => incrementarNivel(index, key)}
+            onDelete={() => eliminarElemento(index, key)}
           />
         ))}
       </div>
 
-      <BarraDeVida vida={vida} capacidadVida={parseInt(capacidadVida, 10)} onIncrement={handleIncrement} onDecrement={handleDecrement} />
-
-      <div className="mt-4 flex items-center justify-center space-x-4">
-        <input
-          id="cantidad"
-          type="number"
-          value={cantidad}
-          onChange={(e) => setCantidad(e.target.value)}
-          className="mt-1 block w-20 pl-2 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+      <BarraDeVida vida={player.vida} capacidadVida={parseInt(player.capvida, 10)} onIncrement={() => handleIncrement(index)} onDecrement={() => handleDecrement(index)} />
+        <div className="mt-4 flex items-center justify-center space-x-4">
+          <input
+            id="cantidad"
+            type="number"
+            value={player.cantidad || 0}
+            onChange={(e) => handlePlayerChange(index, 'cantidad', e.target.value)}
+            className="mt-1 block w-20 pl-2 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
-        <button
-          onClick={handleIncrementSpecific}
-          className="bg-green-500 text-white px-3 py-1 rounded-md"
+          <button
+            onClick={() => handleIncrementSpecific(index, player.cantidad)}
+            className="bg-green-500 text-white px-3 py-1 rounded-md"
           >
-          💚
-        </button>
-        <button
-          onClick={handleDecrementSpecific}
-          className="bg-red-500 text-white px-3 py-1 rounded-md"
-        >
-          🔪
-        </button>
+            💚
+          </button>
+          <button
+            onClick={() => handleDecrementSpecific(index, player.cantidad)}
+            className="bg-red-500 text-white px-3 py-1 rounded-md"
+          >
+            🔪
+          </button>
       </div>
       </div>
     ))}
