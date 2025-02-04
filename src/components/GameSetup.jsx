@@ -21,7 +21,8 @@ const GameSetup = () => {
       brazos: 2,
       elemento: [],
       clan: [],	
-      sharinganLvl: 0
+      sharinganLvl: 0,
+      misiones:[]
     })));
   };
 
@@ -41,33 +42,38 @@ const GameSetup = () => {
   }
 
   return (
-    <div className="game-setup flex flex-col items-center">
-      <h3 htmlFor="num-players" className='text-xl'>Indica el Numero de Jugadores</h3>
-      <div>
-        <input
-          type="number"
-          id="num-players"
-          value={numPlayers}
-          onChange={handleNumPlayersChange}
-          min="2"
-          className="w-20"
-        />
-      </div>
-      {players.map((player, index) => (
-        <div key={index}>
-          <label htmlFor={`player-name-${index}`}>Player {index + 1} Name:</label>
+    <div className="game-setup flex flex-col items-center min-h-screen">
+      <div className="bg-white px-20 py-8 rounded-lg shadow-lg border border-gray-300">
+        <h2 className='text-3xl font-bold mb-6 text-center'>COMIENZA UNA NUEVA PARTIDA</h2>
+        <h3 htmlFor="num-players" className='text-xl mb-4'>Numero de Jugadores</h3>
+        <div className="mb-4">
           <input
-            type="text"
-            id={`player-name-${index}`}
-            value={player.name}
-            onChange={(e) => handlePlayerChange(index, 'name', e.target.value)}
-            className="ml-2"
+            type="number"
+            id="num-players"
+            value={numPlayers}
+            onChange={handleNumPlayersChange}
+            min="2"
+            className="w-20 p-2 border border-gray-300 rounded text-center"
           />
         </div>
-      ))}
-      <button onClick={startGame} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md">
-        Start Game
-      </button>
+        {players.map((player, index) => (
+          <div key={index} className="mb-4">
+            <label htmlFor={`player-name-${index}`} className="block text-lg font-medium text-gray-700 mb-2">
+              #{index + 1} Ninja Name:
+            </label>
+            <input
+              type="text"
+              id={`player-name-${index}`}
+              value={player.name}
+              onChange={(e) => handlePlayerChange(index, 'name', e.target.value)}
+              className="mt-1 p-2 border border-gray-300 rounded w-full"
+            />
+          </div>
+        ))}
+        <button onClick={startGame} className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition duration-300">
+          Start Game
+        </button>
+      </div>
     </div>
   );
 };
