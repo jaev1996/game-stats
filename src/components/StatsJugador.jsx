@@ -234,7 +234,7 @@ const StatsJugador = ({ jugadores }) => {
             <img
               src={clanImages[clan]}
               alt={clan}
-              className="w-6 h-6 mx-2"
+              className="max-w-10 max-h-6 mx-2 object-contain"
               onClick={() => eliminarClan(index, clan)}
             />
           </div>

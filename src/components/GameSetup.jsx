@@ -32,6 +32,16 @@ const GameSetup = () => {
     setPlayers(newPlayers);
   };
   const startGame = () => {
+    if (players.length === 0 || players.length < 2) {
+      alert('Debe haber al menos 2 jugadores para iniciar la partida.');
+      return;
+    }
+    for (let player of players) {
+      if (player.name.length < 4 || player.name.length > 10) {
+        alert('El nombre del jugador debe tener entre 4 y 10 caracteres.');
+        return;
+      }
+    }
     setGameStarted(true);
   };
 
