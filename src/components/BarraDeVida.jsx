@@ -18,7 +18,6 @@ const BarraDeVida = ({ vida, capacidadVida, onIncrement, onDecrement }) => {
     </div>
     <div>
         <span className="right-0 top-0 text-xl p-1">❤{vida}</span>
-        <label htmlFor="cantidad" className="block">Controles de Vida</label>
         <div className="flex items-center justify-center space-x-2">
           <button onClick={onDecrement} className="bg-red-500 text-white px-3 py-1 rounded-md" > -5 </button> 
           <button onClick={onIncrement} className="bg-green-500 text-white px-3 py-1 rounded-md" > +5</button> 

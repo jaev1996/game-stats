@@ -41,6 +41,20 @@ const StatsJugador = ({ jugadores }) => {
     };
   }, []);
 
+  const [showOptions, setShowOptions] = useState(Array(players.length).fill(false));
+
+  const toggleOptions = (index) => {
+    const newShowOptions = [...showOptions];
+    newShowOptions[index] = !newShowOptions[index];
+    setShowOptions(newShowOptions);
+  };
+
+  const handleOptionSelect = (index, option) => {
+    // Aquí puedes manejar las opciones "Muerto" y "Victoria"
+    alert(`Jugador ${index + 1} seleccionado: ${option}`);
+    toggleOptions(index);
+  };
+
   const handleVidaChange = (index, change) => {
     const newPlayers = [...players];
     newPlayers[index].vida = Math.min(Math.max(newPlayers[index].vida + change, newPlayers[index].capvida), 200);
@@ -71,10 +85,23 @@ const StatsJugador = ({ jugadores }) => {
   const handleElementoChange = (index) => (event) => {
     const newElemento = event.target.value;
     const newPlayers = [...players];
-    if (!newPlayers[index].nivelesElementos) {
-      newPlayers[index].nivelesElementos = {};
+  
+    if (newElemento === "") {
+      return;
     }
-    newPlayers[index].nivelesElementos[newElemento] = newPlayers[index].nivelesElementos[newElemento] || 1;
+  
+    if (newElemento === "Todos") {
+      Object.keys(elementos).forEach((key) => {
+        if (!newPlayers[index].nivelesElementos[key]) {
+          newPlayers[index].nivelesElementos[key] = 1;
+        }
+      });
+    } else {
+      if (!newPlayers[index].nivelesElementos[newElemento]) {
+        newPlayers[index].nivelesElementos[newElemento] = 1;
+      }
+    }
+  
     setPlayers(newPlayers);
   };
 
@@ -91,10 +118,16 @@ const StatsJugador = ({ jugadores }) => {
   };
 
   const handleClanChange = (index) => (event) => {
-    const newClan = event.target.value;
+    const selectedClan = event.target.value;
     const newPlayers = [...players];
-    if (newClan && !newPlayers[index].clan.includes(newClan)) {
-      newPlayers[index].clan = [...newPlayers[index].clan, newClan];
+    
+    if (newPlayers[index].clan.length >= 2) {
+      alert('Un jugador no puede tener más de 2 clanes.');
+      return;
+    }
+  
+    if (selectedClan && !newPlayers[index].clan.includes(selectedClan)) {
+      newPlayers[index].clan.push(selectedClan);
       setPlayers(newPlayers);
     }
   };
@@ -140,13 +173,39 @@ const StatsJugador = ({ jugadores }) => {
       <ModalMisiones name="Ejecucion Ninjas" />
       <ModalMisiones name="Pasos en Conjunto" />
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
    
 
     {players.map((player, index) => (
-      <div className="p-4 border rounded-lg shadow-md bg-white" key={index}>
-        <h3 className='text-xl font-bold'>{player.name}</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div className="p-1 border rounded-lg shadow-md bg-white" key={index}>
+        <div className="flex justify-between items-center">
+            <h3 className="text-xl font-bold">{player.name}</h3>
+            <div className="relative">
+              <button
+                onClick={() => toggleOptions(index)}
+                className="bg-gray-300 text-gray-700 px-2 py-1 rounded-md"
+              >
+                Opciones
+              </button>
+              {showOptions[index] && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
+                  <button
+                    onClick={() => handleOptionSelect(index, 'Muerto')}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Muerto
+                  </button>
+                  <button
+                    onClick={() => handleOptionSelect(index, 'Victoria')}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Victoria
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1">
         <div>
           Daño💥: <input
             id="dano"
@@ -203,25 +262,25 @@ const StatsJugador = ({ jugadores }) => {
             className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
-        <div>
+
+      </div>
+      <div className="inline-block align-center mt-1">
           Vida💗:  
           <input 
             type="text" 
             value={player.capvida} 
             onChange={(e) => handlePlayerChange(index, 'capvida', e.target.value)} // No convertimos aquí
-            className="w-2/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="ml-2 w-1/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
-        </div>
-
       </div>
      
       <div className='flex flex-wrap justify-center align-center'>
         <select
             id="clan-select"
             onChange={handleClanChange(index)}
-            className="w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mt-1 ml-2"
+            className="w-30 pl-3 pr-5 text-xs sm:text-sm rounded-md mt-1 ml-2"
             >
-            <option value="">Kekkei Genkai</option>
+            <option value="">Clanes</option>
             {clanes.map((clan) => (
               <option key={clan} value={clan}>
                 {clan}
@@ -234,7 +293,7 @@ const StatsJugador = ({ jugadores }) => {
             <img
               src={clanImages[clan]}
               alt={clan}
-              className="max-w-10 max-h-6 mx-2 object-contain"
+              className="max-w-10 max-h-6 cursor-pointer mx-2 object-contain"
               onClick={() => eliminarClan(index, clan)}
             />
           </div>
@@ -244,7 +303,7 @@ const StatsJugador = ({ jugadores }) => {
         <select
           id="elemento-select"
           onChange={handleElementoChange(index)}
-          className="mt-1 w-30 pl-3 pr-5 text-xs focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md mb-2 ml-2"
+          className="w-30 pl-3 pr-5 text-xs sm:text-sm rounded-md mt-1 ml-2 mb-2"
         >
           <option value="">Elementos</option>
           {Object.keys(elementos).map((key) => (
@@ -252,6 +311,7 @@ const StatsJugador = ({ jugadores }) => {
               {elementos[key]} {key}
             </option>
           ))}
+          <option className='text-xs' value="Todos">Todos</option>
         </select>
       </div>
       <div className="flex flex-wrap justify-center align-center">
@@ -267,7 +327,7 @@ const StatsJugador = ({ jugadores }) => {
       </div>
 
       <BarraDeVida vida={player.vida} capacidadVida={parseInt(player.capvida, 10)} onIncrement={() => handleIncrement(index)} onDecrement={() => handleDecrement(index)} />
-        <div className="mt-4 flex items-center justify-center space-x-4">
+        <div className="mt-2 flex items-center justify-center space-x-4">
           <input
             id="cantidad"
             type="number"
