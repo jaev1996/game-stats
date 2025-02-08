@@ -45,9 +45,15 @@ const GameSetup = () => {
     setGameStarted(true);
   };
 
+  const handleNewGame = () => {
+    setGameStarted(false);
+    setPlayers([]);
+    setNumPlayers(0);
+  };
+
   if (gameStarted) {
     return (
-        <StatsJugador jugadores={players} />
+        <StatsJugador jugadores={players} onNewGame={handleNewGame}/>
     );
   }
 

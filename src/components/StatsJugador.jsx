@@ -12,6 +12,19 @@ import kaguyaImage from '../assets/kaguya.png';
 import powerImage from '../assets/poder.png';
 import ContadorPasos from './ContadorPasos';
 import ModalMisiones from './ModalMisiones';
+import PlayerOptions from './PlayerOptions';
+import muerte1 from '../assets/death1.gif';
+import muerte2 from '../assets/death2.gif';
+import muerte3 from '../assets/death3.gif';
+import muerte4 from '../assets/death4.gif';
+import muerte5 from '../assets/death5.gif';
+import muerte6 from '../assets/death6.gif';
+import win1 from '../assets/win1.gif';
+import win2 from '../assets/win2.gif';
+import win3 from '../assets/win3.gif';
+import win4 from '../assets/win4.gif';
+import win5 from '../assets/win5.gif';
+import VictoryModal from './VictoryModal';
 
 
 const clanes = ['Kaguya', 'Uzumaki', 'Hyuga', 'Power', 'Senju', 'Uchiha'];
@@ -24,9 +37,15 @@ const clanImages = {
   Uchiha: uchihaImage
   };
 
-const StatsJugador = ({ jugadores }) => {
+const StatsJugador = ({ jugadores, onNewGame }) => {
 
   const [players, setPlayers] = useState(jugadores);
+  const [showVictory, setShowVictory] = useState(false);
+  const [victoryPlayer, setVictoryPlayer] = useState(null);
+  const [victoryGif, setVictoryGif] = useState(null);
+  const [fadeOut, setFadeOut] = useState(false);
+  
+
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -40,20 +59,6 @@ const StatsJugador = ({ jugadores }) => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
-
-  const [showOptions, setShowOptions] = useState(Array(players.length).fill(false));
-
-  const toggleOptions = (index) => {
-    const newShowOptions = [...showOptions];
-    newShowOptions[index] = !newShowOptions[index];
-    setShowOptions(newShowOptions);
-  };
-
-  const handleOptionSelect = (index, option) => {
-    // Aquí puedes manejar las opciones "Muerto" y "Victoria"
-    alert(`Jugador ${index + 1} seleccionado: ${option}`);
-    toggleOptions(index);
-  };
 
   const handleVidaChange = (index, change) => {
     const newPlayers = [...players];
@@ -82,10 +87,66 @@ const StatsJugador = ({ jugadores }) => {
     setPlayers(newPlayers);
   };
 
+  const confirmDeath = (index) => {
+    const newPlayers = [...players];
+    const defeatGifs = [muerte1, muerte2, muerte3, muerte4, muerte5, muerte6];
+    const randomGif = defeatGifs[Math.floor(Math.random() * defeatGifs.length)];
+    newPlayers[index].vida = newPlayers[index].capvida;
+    newPlayers[index].defeatGif = randomGif;
+    setPlayers(newPlayers);
+  };
+
+  const confirmRevive = (index) => {
+    const newPlayers = [...players];
+    newPlayers[index].vida = parseInt(newPlayers[index].capvida) + 5;
+    newPlayers[index].defeatGif = null;
+    setPlayers(newPlayers);
+  };
+
+  const handleOptionSelect = (index, option) => {
+    
+    if (option === 'Victoria') {
+      const winGifs = [win1, win2, win3, win4, win5];
+      const randomGif = winGifs[Math.floor(Math.random() * winGifs.length)];
+      setVictoryGif(randomGif);
+      setVictoryPlayer(players[index]);
+      setShowVictory(true);
+    }
+  };
+
+  const handleNewGame = () => {
+    setPlayers([]); // Eliminar los datos de los jugadores
+    setShowVictory(false);
+    onNewGame(); // Llamar a la función para volver a la configuración del juego
+  };
+
+  const handleRestartGame = () => {
+    const resetPlayers = players.map(player => ({
+      ...player,
+      vida: 0,
+      capvida: -200,
+      dano: 0,
+      evasion: 0,
+      armadura: 0,
+      ojos: 2,
+      elemento: [],
+      clan: [],
+      sharinganLvl: 0,
+      misiones: [],
+      defeatGif: null
+    }));
+    setPlayers(resetPlayers);
+    setShowVictory(false);
+  };
+
   const handleElementoChange = (index) => (event) => {
     const newElemento = event.target.value;
     const newPlayers = [...players];
-  
+    
+    if (!newPlayers[index].nivelesElementos) {
+      newPlayers[index].nivelesElementos = {};
+    }
+
     if (newElemento === "") {
       return;
     }
@@ -179,32 +240,19 @@ const StatsJugador = ({ jugadores }) => {
     {players.map((player, index) => (
       <div className="p-1 border rounded-lg shadow-md bg-white" key={index}>
         <div className="flex justify-between items-center">
-            <h3 className="text-xl font-bold">{player.name}</h3>
-            <div className="relative">
-              <button
-                onClick={() => toggleOptions(index)}
-                className="bg-gray-300 text-gray-700 px-2 py-1 rounded-md"
-              >
-                Opciones
-              </button>
-              {showOptions[index] && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
-                  <button
-                    onClick={() => handleOptionSelect(index, 'Muerto')}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Muerto
-                  </button>
-                  <button
-                    onClick={() => handleOptionSelect(index, 'Victoria')}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Victoria
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+          <h3 className="text-xl font-bold">{player.name}</h3>
+          <PlayerOptions
+                index={index}
+                handleOptionSelect={handleOptionSelect}
+                confirmDeath={confirmDeath}
+                confirmRevive={confirmRevive}
+                isDead={player.vida === player.capvida}
+              />    
+        </div>
+        {player.defeatGif ? (
+              <img src={player.defeatGif} alt="Derrota" className="w-full h-auto" />
+            ) : (
+        <>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1">
         <div>
           Daño💥: <input
@@ -325,6 +373,7 @@ const StatsJugador = ({ jugadores }) => {
           />
         ))}
       </div>
+     
 
       <BarraDeVida vida={player.vida} capacidadVida={parseInt(player.capvida, 10)} onIncrement={() => handleIncrement(index)} onDecrement={() => handleDecrement(index)} />
         <div className="mt-2 flex items-center justify-center space-x-4">
@@ -348,6 +397,7 @@ const StatsJugador = ({ jugadores }) => {
             🔪
           </button>
         </div>
+        </> )}
         {/* Controles para agregar misiones */}
         <div className="mt-4 flex items-center justify-center space-x-4">
         <h4 className="text-lg font-bold">Misiones:</h4>
@@ -373,6 +423,19 @@ const StatsJugador = ({ jugadores }) => {
       </div>
     ))}
     </div>
+    {showVictory && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black">
+          <img src={victoryGif} alt="Victoria" className="w-4/5 h-full" />
+        </div>
+      )}
+      <VictoryModal
+        show={showVictory}
+        onClose={() => setShowVictory(false)}
+        players={players}
+        victoryPlayer={victoryPlayer}
+        onNewGame={handleNewGame}
+        onRestartGame={handleRestartGame}
+      />
     </>
   );
 };
