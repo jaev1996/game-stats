@@ -1,36 +1,26 @@
-import React, { useState } from 'react';
-import './App.css'
-import StatsJugador from './components/StatsJugador'
-import ContadorPasos from './components/ContadorPasos';
-import ModalMisiones from './components/ModalMisiones';
+import React from 'react';
+import './App.css';
+import gif1 from './assets/naruto-sasuke.gif';
+import gif2 from './assets/obito-kakashi.gif';
+import gif3 from './assets/madara.gif';
+import gif4 from './assets/lee.gif';
+import GameSetup from './components/GameSetup';
 
 function App() {
-  const [jugadores, setJugadores] = useState([ 
-    { name: 'Breit', vida: -100, dano: 0, evasion: 0, armor: 0, capvida: -200  },
-    { name: 'Enma', vida: 100, dano: 0, evasion: 0, armor: 0, capvida: -200  },
-    { name: 'JoseD', vida: 150, dano: 0, evasion: 0, armor: 0, capvida: -200  },
-    { name: 'Jaev', vida: 125, dano: 0, evasion: 0, armor: 0, capvida: -200  }
-  ]);
   return (
-    <div className="container mx-auto p-4"> 
-      
-      <h1 className="text-2xl font-bold mb-4">Estadísticas del Juego</h1> 
-      <ContadorPasos />
-      <div className='flex flex-row justify-center'>
-        <ModalMisiones name="Cazar Bestias" />
-        <ModalMisiones name="Ejecucion Ninjas" />
-        <ModalMisiones name="Pasos en Conjunto" />
+    <div className="relative container mx-auto p-4 min-h-screen">
+      <div className="absolute inset-0 grid grid-cols-2 gap-0" style={{ filter: 'blur(5px)' }}>
+        <div className="bg-cover bg-center" style={{ backgroundImage: `url(${gif1})` }}></div>
+        <div className="bg-cover bg-center" style={{ backgroundImage: `url(${gif2})` }}></div>
+        <div className="bg-cover bg-center" style={{ backgroundImage: `url(${gif3})` }}></div>
+        <div className="bg-cover bg-center" style={{ backgroundImage: `url(${gif4})` }}></div>
       </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
-        {jugadores.map((jugador, index) => (
-          <div key={index} className="mb-4">
-            <StatsJugador jugador={jugador} />
-          </div>
-        ))}
+      <div className="relative z-10">
+        <GameSetup />
       </div>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
