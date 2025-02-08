@@ -60,7 +60,7 @@ const GameSetup = () => {
   return (
     <div className="game-setup flex flex-col items-center min-h-screen">
       <div className="bg-white px-20 py-8 rounded-lg shadow-lg border border-gray-300">
-        <h2 className='text-3xl font-bold mb-6 text-center'>COMIENZA UNA NUEVA PARTIDA</h2>
+        <h2 className='text-3xl font-bold mb-6 text-center'>NUEVA PARTIDA</h2>
         <h3 htmlFor="num-players" className='text-xl mb-4'>Numero de Jugadores</h3>
         <div className="mb-4">
           <input
