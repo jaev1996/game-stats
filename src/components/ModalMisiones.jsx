@@ -71,7 +71,7 @@ const rewardPasos = [
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-md shadow-md">
             <h2 className="text-xl font-bold mb-4">Recompensas por {name}</h2>
             <ul>
