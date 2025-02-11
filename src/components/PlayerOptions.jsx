@@ -31,12 +31,12 @@ const PlayerOptions = ({ index, handleOptionSelect, confirmDeath, confirmRevive,
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <button
         onClick={toggleOptions}
         className="bg-gray-300 text-gray-700 px-2 py-1 rounded-md"
       >
-        ⚙️
+        ⚙
       </button>
       {showOptions && (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
@@ -67,7 +67,7 @@ const PlayerOptions = ({ index, handleOptionSelect, confirmDeath, confirmRevive,
         </div>
       )}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-4">Confirmar {modalType}</h2>
             <p>¿Estás seguro de que quieres darle {modalType.toLowerCase()} a este jugador?</p>

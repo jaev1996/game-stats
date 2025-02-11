@@ -43,7 +43,6 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
   const [showVictory, setShowVictory] = useState(false);
   const [victoryPlayer, setVictoryPlayer] = useState(null);
   const [victoryGif, setVictoryGif] = useState(null);
-  const [fadeOut, setFadeOut] = useState(false);
   
 
 
@@ -122,7 +121,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
 
   const handleRestartGame = () => {
     const resetPlayers = players.map(player => ({
-      ...player,
+      name: player.name,
       vida: 0,
       capvida: -200,
       dano: 0,
@@ -135,6 +134,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
       misiones: [],
       defeatGif: null
     }));
+    setPlayers([]); // Eliminar los datos de los jugadores
     setPlayers(resetPlayers);
     setShowVictory(false);
   };
@@ -228,18 +228,16 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
   return (
     <>
     
-    <ContadorPasos />
     <div className='flex flex-row justify-center'>
-      <ModalMisiones name="Cazar Bestias" />
-      <ModalMisiones name="Ejecucion Ninjas" />
-      <ModalMisiones name="Pasos en Conjunto" />
+    <ContadorPasos />
+      <ModalMisiones />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
    
 
     {players.map((player, index) => (
       <div className="p-1 border rounded-lg shadow-md bg-white" key={index}>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-2">
           <h3 className="text-xl font-bold">{player.name}</h3>
           <PlayerOptions
                 index={index}
@@ -376,35 +374,39 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
      
 
       <BarraDeVida vida={player.vida} capacidadVida={parseInt(player.capvida, 10)} onIncrement={() => handleIncrement(index)} onDecrement={() => handleDecrement(index)} />
-        <div className="mt-2 flex items-center justify-center space-x-4">
+        <div className="mt-2 flex flex-wrap items-center justify-center space-x-2">
           <input
             id="cantidad"
             type="number"
             value={player.cantidad || 0}
             onChange={(e) => handlePlayerChange(index, 'cantidad', e.target.value)}
-            className="mt-1 block w-20 pl-2 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-          />
+            className="mt-1 block w-20 pl-1 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            />
+          <div className='space-x-2'>
           <button
             onClick={() => handleIncrementSpecific(index, player.cantidad)}
             className="bg-green-500 text-white px-3 py-1 rounded-md"
-          >
+            >
             💚
           </button>
           <button
             onClick={() => handleDecrementSpecific(index, player.cantidad)}
             className="bg-red-500 text-white px-3 py-1 rounded-md"
-          >
-            🔪
+            >
+            ⚔
           </button>
+          </div>
         </div>
         </> )}
         {/* Controles para agregar misiones */}
-        <div className="mt-4 flex items-center justify-center space-x-4">
+        <div className="mt-4 flex flex-wrap items-center justify-center space-x-2">
         <h4 className="text-lg font-bold">Misiones:</h4>
-          <button onClick={() => agregarMision(index, 'S')} className="bg-red-600 text-white px-3 py-1 rounded-md">S</button>
-          <button onClick={() => agregarMision(index, 'A')} className="bg-orange-500 text-white px-3 py-1 rounded-md">A</button>
-          <button onClick={() => agregarMision(index, 'B')} className="bg-yellow-500 text-white px-3 py-1 rounded-md">B</button>
-          <button onClick={() => agregarMision(index, 'C')} className="bg-green-600 text-white px-3 py-1 rounded-md">C</button>
+          <div className='space-x-2'>
+            <button onClick={() => agregarMision(index, 'S')} className="bg-red-600 text-white px-3 py-1 rounded-md">S</button>
+            <button onClick={() => agregarMision(index, 'A')} className="bg-orange-500 text-white px-3 py-1 rounded-md">A</button>
+            <button onClick={() => agregarMision(index, 'B')} className="bg-yellow-500 text-white px-3 py-1 rounded-md">B</button>
+            <button onClick={() => agregarMision(index, 'C')} className="bg-green-600 text-white px-3 py-1 rounded-md">C</button>
+          </div>
         </div>
         {/* Mostrar misiones */}
         <div className="mt-4">
@@ -424,7 +426,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
     ))}
     </div>
     {showVictory && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black">
+        <div className="fixed inset-0 flex items-center justify-center bg-black z-50">
           <img src={victoryGif} alt="Victoria" className="w-4/5 h-full" />
         </div>
       )}
