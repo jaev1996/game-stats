@@ -228,18 +228,16 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
   return (
     <>
     
-    <ContadorPasos />
     <div className='flex flex-row justify-center'>
-      <ModalMisiones name="Cazar Bestias" />
-      <ModalMisiones name="Ejecucion Ninjas" />
-      <ModalMisiones name="Pasos en Conjunto" />
+    <ContadorPasos />
+      <ModalMisiones />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
    
 
     {players.map((player, index) => (
       <div className="p-1 border rounded-lg shadow-md bg-white" key={index}>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-2">
           <h3 className="text-xl font-bold">{player.name}</h3>
           <PlayerOptions
                 index={index}
@@ -428,7 +426,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
     ))}
     </div>
     {showVictory && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black">
+        <div className="fixed inset-0 flex items-center justify-center bg-black z-50">
           <img src={victoryGif} alt="Victoria" className="w-4/5 h-full" />
         </div>
       )}

@@ -27,7 +27,7 @@ const VictoryModal = ({ show, onClose, players, victoryPlayer, onNewGame, onRest
   const sortedPlayers = [...players].sort((a, b) => calculateScore(b) - calculateScore(a));
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 bg-opacity-80">
         <h2 className="text-2xl font-bold mb-4">¡Victoria!</h2>
         <p className="mb-4">{victoryPlayer.name} ha ganado la partida.</p>
