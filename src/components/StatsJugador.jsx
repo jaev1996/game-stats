@@ -1,5 +1,5 @@
 // src/components/StatsJugador.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { elementos } from '../data/elementos';
 import Elemento from './Elemento';
 import BarraDeVida from './BarraDeVida';
@@ -10,7 +10,7 @@ import uzumakiImage from '../assets/uzumaki.png';
 import senjuImage from '../assets/senju.png';
 import kaguyaImage from '../assets/kaguya.png';
 import powerImage from '../assets/poder.png';
-import ContadorPasos from './ContadorPasos';
+import SkippedTurns from './SkippedTurns';
 import ModalMisiones from './ModalMisiones';
 import PlayerOptions from './PlayerOptions';
 import muerte1 from '../assets/death1.gif';
@@ -25,6 +25,8 @@ import win3 from '../assets/win3.gif';
 import win4 from '../assets/win4.gif';
 import win5 from '../assets/win5.gif';
 import VictoryModal from './VictoryModal';
+import MissionControls from './MissionControls';
+import PlayersContext from './PlayersContext';
 
 
 const clanes = ['Kaguya', 'Uzumaki', 'Hyuga', 'Power', 'Senju', 'Uchiha'];
@@ -37,9 +39,9 @@ const clanImages = {
   Uchiha: uchihaImage
   };
 
-const StatsJugador = ({ jugadores, onNewGame }) => {
+const StatsJugador = ({ onNewGame }) => {
 
-  const [players, setPlayers] = useState(jugadores);
+  const {players, setPlayers} = useContext(PlayersContext);
   const [showVictory, setShowVictory] = useState(false);
   const [victoryPlayer, setVictoryPlayer] = useState(null);
   const [victoryGif, setVictoryGif] = useState(null);
@@ -199,37 +201,11 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
     setPlayers(newPlayers);
   };
 
-  const agregarMision = (index, rango) => {
-    const newPlayers = [...players];
-    newPlayers[index].misiones.push(rango);
-    setPlayers(newPlayers);
-  };
-  const eliminarMision = (index, misionIndex) => {
-    const newPlayers = [...players];
-    newPlayers[index].misiones.splice(misionIndex, 1);
-    setPlayers(newPlayers);
-  };
-
-  const getMisionClass = (rango) => {
-    switch (rango) {
-      case 'C':
-        return 'bg-green-600 text-white';
-      case 'B':
-        return 'bg-yellow-500 text-black';
-      case 'A':
-        return 'bg-orange-500 text-white';
-      case 'S':
-        return 'bg-red-600 text-white';
-      default:
-        return '';
-    }
-  };
-
   return (
     <>
     
     <div className='flex flex-row justify-center'>
-    <ContadorPasos />
+      <SkippedTurns />
       <ModalMisiones />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -258,7 +234,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="text"
             value={player.dano}
             onChange={(e) => handlePlayerChange(index, 'dano', e.target.value)}
-            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
         <div>
@@ -267,7 +243,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="text"
             value={player.evasion}
             onChange={(e) => handlePlayerChange(index, 'evasion', e.target.value)}
-            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
         <div>
@@ -276,7 +252,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="text"
             value={player.armadura}
             onChange={(e) => handlePlayerChange(index, 'armadura', e.target.value)}
-            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
         
@@ -286,7 +262,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="number"
             value={player.ojos}
             onChange={(e) => handlePlayerChange(index, 'ojos', e.target.value)}
-            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
         
@@ -296,7 +272,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="text"
             value={player.brazos}
             onChange={(e) => handlePlayerChange(index, 'brazos', e.target.value)}
-            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
         </div>
         <div>
@@ -305,7 +281,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="number"
             value={player.sharinganLvl}
             onChange={(e) => handlePlayerChange(index, 'sharinganLvl', e.target.value)}
-            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="w-10 pl-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
         </div>
 
@@ -316,7 +292,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="text" 
             value={player.capvida} 
             onChange={(e) => handlePlayerChange(index, 'capvida', e.target.value)} // No convertimos aquí
-            className="ml-2 w-1/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="ml-2 w-1/4 pl-3 pr-2 py-1 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
           />
       </div>
      
@@ -380,7 +356,7 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
             type="number"
             value={player.cantidad || 0}
             onChange={(e) => handlePlayerChange(index, 'cantidad', e.target.value)}
-            className="mt-1 block w-20 pl-1 py-2 text-base focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
+            className="mt-1 block w-20 pl-1 py-2 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
             />
           <div className='space-x-2'>
           <button
@@ -398,30 +374,10 @@ const StatsJugador = ({ jugadores, onNewGame }) => {
           </div>
         </div>
         </> )}
-        {/* Controles para agregar misiones */}
-        <div className="mt-4 flex flex-wrap items-center justify-center space-x-2">
-        <h4 className="text-lg font-bold">Misiones:</h4>
-          <div className='space-x-2'>
-            <button onClick={() => agregarMision(index, 'S')} className="bg-red-600 text-white px-3 py-1 rounded-md">S</button>
-            <button onClick={() => agregarMision(index, 'A')} className="bg-orange-500 text-white px-3 py-1 rounded-md">A</button>
-            <button onClick={() => agregarMision(index, 'B')} className="bg-yellow-500 text-white px-3 py-1 rounded-md">B</button>
-            <button onClick={() => agregarMision(index, 'C')} className="bg-green-600 text-white px-3 py-1 rounded-md">C</button>
-          </div>
-        </div>
-        {/* Mostrar misiones */}
-        <div className="mt-4">
-          <ul className="flex flex-wrap items-center justify-center space-x-2">
-            {player.misiones.map((mision, mIndex) => (
-              <li
-                key={mIndex}
-                className={`text-sm mb-1 cursor-pointer ${getMisionClass(mision)} px-2 py-1 rounded-md`}
-                onClick={() => eliminarMision(index, mIndex)}
-              >
-                {mision}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <MissionControls
+          index={index}
+          player={player}
+        />
       </div>
     ))}
     </div>

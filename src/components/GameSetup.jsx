@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import StatsJugador from './StatsJugador';
-import { elementos } from '../data/elementos';
+import PlayersContext from './PlayersContext';
 
 const GameSetup = () => {
   const [numPlayers, setNumPlayers] = useState(0);
-  const [players, setPlayers] = useState([]);
+  const {players, setPlayers} = useContext(PlayersContext);
   const [gameStarted, setGameStarted] = useState(false);
 
   const handleNumPlayersChange = (e) => {
@@ -53,7 +53,7 @@ const GameSetup = () => {
 
   if (gameStarted) {
     return (
-        <StatsJugador jugadores={players} onNewGame={handleNewGame}/>
+        <StatsJugador onNewGame={handleNewGame}/>
     );
   }
 
