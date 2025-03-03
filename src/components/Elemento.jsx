@@ -1,5 +1,4 @@
 // src/components/Elemento.js
-import React from 'react';
 
 const Elemento = ({ elemento, nivel, onIncrement, onDelete }) => (
   <div className="flex items-center m-1">

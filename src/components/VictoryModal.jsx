@@ -1,9 +1,39 @@
-import React from 'react';
+import {useContext} from 'react';
+import PlayersContext from './PlayersContext';
 
-const VictoryModal = ({ show, onClose, players, victoryPlayer, onNewGame, onRestartGame }) => {
-    if (!show) {
+const VictoryModal = ({ show, victoryPlayer, setShowVictory, onNewGame }) => {
+  
+  const {players, setPlayers} = useContext(PlayersContext);
+  
+  if (!show) {
       return null;
     }
+    const handleNewGame = () => {
+      setPlayers([]); // Eliminar los datos de los jugadores
+      setShowVictory(false);
+      onNewGame(); // Llamar a la función para volver a la configuración del juego
+    };
+  
+    const handleRestartGame = () => {
+      const resetPlayers = players.map(player => ({
+        name: player.name,
+        vida: 0,
+        capvida: -200,
+        dano: 0,
+        evasion: 0,
+        armadura: 0,
+        ojos: 2,
+        brazos: 2,
+        elemento: [],
+        clan: [],
+        sharinganLvl: 0,
+        misiones: [],
+        defeatGif: null
+      }));
+      setPlayers([]); // Eliminar los datos de los jugadores
+      setPlayers(resetPlayers);
+      setShowVictory(false);
+    };
 
   // Calcular los puntajes de los jugadores
   const calculateScore = (player) => {
@@ -49,13 +79,13 @@ const VictoryModal = ({ show, onClose, players, victoryPlayer, onNewGame, onRest
         </table>
         <div className="mt-4 flex justify-end space-x-2">
           <button
-            onClick={onNewGame}
+            onClick={handleNewGame}
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
             Nueva Partida
           </button>
           <button
-            onClick={onRestartGame}
+            onClick={handleRestartGame}
             className="bg-green-500 text-white px-4 py-2 rounded-md"
           >
             Reiniciar Partida

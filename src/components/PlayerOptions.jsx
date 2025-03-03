@@ -1,10 +1,52 @@
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
+import PlayersContext from './PlayersContext';
+import muerte1 from '../assets/death1.gif';
+import muerte2 from '../assets/death2.gif';
+import muerte3 from '../assets/death3.gif';
+import muerte4 from '../assets/death4.gif';
+import muerte5 from '../assets/death5.gif';
+import muerte6 from '../assets/death6.gif';
+import win1 from '../assets/win1.gif';
+import win2 from '../assets/win2.gif';
+import win3 from '../assets/win3.gif';
+import win4 from '../assets/win4.gif';
+import win5 from '../assets/win5.gif';
 
-const PlayerOptions = ({ index, handleOptionSelect, confirmDeath, confirmRevive, isDead }) => {
+const PlayerOptions = ({ index, isDead, setVictoryPlayer, setVictoryGif, setShowVictory }) => {
+  const { players, setPlayers } = useContext(PlayersContext);
   const [showOptions, setShowOptions] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
+  
 
+  
+  const confirmDeath = (index) => {
+    const newPlayers = [...players];
+    const defeatGifs = [muerte1, muerte2, muerte3, muerte4, muerte5, muerte6];
+    const randomGif = defeatGifs[Math.floor(Math.random() * defeatGifs.length)];
+    newPlayers[index].vida = newPlayers[index].capvida;
+    newPlayers[index].defeatGif = randomGif;
+    setPlayers(newPlayers);
+  };
+
+  const confirmRevive = (index) => {
+    const newPlayers = [...players];
+    newPlayers[index].vida = parseInt(newPlayers[index].capvida) + 5;
+    newPlayers[index].defeatGif = null;
+    setPlayers(newPlayers);
+  };
+
+  const handleOptionSelect = (index, option) => {
+    
+    if (option === 'Victoria') {
+      const winGifs = [win1, win2, win3, win4, win5];
+      const randomGif = winGifs[Math.floor(Math.random() * winGifs.length)];
+      setVictoryGif(randomGif);
+      setVictoryPlayer(players[index]);
+      setShowVictory(true);
+    }
+  };
+  
   const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
