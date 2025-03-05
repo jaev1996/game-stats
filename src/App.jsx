@@ -5,6 +5,8 @@ import gif2 from './assets/obito-kakashi.gif';
 import gif3 from './assets/madara.gif';
 import gif4 from './assets/lee.gif';
 import GameSetup from './components/GameSetup';
+import { PlayersProvider } from './components/PlayersContext';
+
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
         <div className="bg-cover bg-center" style={{ backgroundImage: `url(${gif4})` }}></div>
       </div>
       <div className="relative z-10">
-        <GameSetup />
+        <PlayersProvider>
+          <GameSetup />
+        </PlayersProvider>
       </div>
       <div className="absolute inset-0 bg-black opacity-50"></div>
     </div>

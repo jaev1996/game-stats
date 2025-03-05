@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import StatsJugador from './StatsJugador';
-import { elementos } from '../data/elementos';
+import { useContext, useState } from 'react';
+import PlayersContext from './PlayersContext';
+import GameBoard from './GameBoard';
 
 const GameSetup = () => {
   const [numPlayers, setNumPlayers] = useState(0);
-  const [players, setPlayers] = useState([]);
+  const {players, setPlayers} = useContext(PlayersContext);
   const [gameStarted, setGameStarted] = useState(false);
 
   const handleNumPlayersChange = (e) => {
@@ -21,8 +21,10 @@ const GameSetup = () => {
       brazos: 2,
       elemento: [],
       clan: [],	
+      inv: [],	
       sharinganLvl: 0,
-      misiones:[]
+      misiones:[],
+      dInv: 0,
     })));
   };
 
@@ -53,7 +55,7 @@ const GameSetup = () => {
 
   if (gameStarted) {
     return (
-        <StatsJugador jugadores={players} onNewGame={handleNewGame}/>
+        <GameBoard handlePlayerChange={handlePlayerChange} onNewGame={handleNewGame}/>
     );
   }
 

@@ -4,3 +4,21 @@
 body {
     background-color: #28282B; /* Fondo negro */
   }
+  @keyframes fade-in-out {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .animate-fade-in-out {
+    animation: fade-in-out 1s forwards;
+  }
