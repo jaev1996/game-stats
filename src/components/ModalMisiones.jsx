@@ -66,8 +66,8 @@ const rewardPasos = mPasos;
       )}
 
       {isOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-md">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
+          <div className="bg-white p-6 rounded-md shadow-md max-w-full max-h-full overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">Recompensas</h2>
             <div className="flex justify-center">
               <img src={rewards} alt="rewards" className="w-full h-auto" />

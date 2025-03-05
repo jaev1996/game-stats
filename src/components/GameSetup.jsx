@@ -21,8 +21,10 @@ const GameSetup = () => {
       brazos: 2,
       elemento: [],
       clan: [],	
+      inv: [],	
       sharinganLvl: 0,
-      misiones:[]
+      misiones:[],
+      dInv: 0,
     })));
   };
 

@@ -10,7 +10,7 @@ if (vida >= 100) {
     return `linear-gradient(to right, red ${-vida / 2}%, yellow 100%)`; 
 } };
 
-const BarraDeVida = ({ index, player, handlePlayerChange }) => {
+const BarraDeVida = ({ index, player }) => {
   const { players, setPlayers } = useContext(PlayersContext);
   const handleVidaChange = (index, change) => {
     const newPlayers = [...players];
@@ -40,32 +40,13 @@ const BarraDeVida = ({ index, player, handlePlayerChange }) => {
     <div>
         <span className="right-0 top-0 text-xl p-1">❤{player.vida}</span>
         <div className="flex items-center justify-center space-x-2">
-          <button onClick={() => handleDecrement(index, 5)} className="bg-red-500 text-white px-3 py-1 rounded-md" > -5 </button> 
-          <button onClick={() => handleIncrement(index, 5)} className="bg-green-500 text-white px-3 py-1 rounded-md" > +5</button> 
+          <button onClick={() => handleDecrement(index, 20)} className="bg-red-600 hover:shadow-lg hover:shadow-red-600/50 text-white px-1 py-1 rounded-sm" > -20 </button> 
+          <button onClick={() => handleDecrement(index, 10)} className="bg-red-600 hover:shadow-lg hover:shadow-red-600/50 text-white px-1 py-1 rounded-sm" > -10 </button> 
+          <button onClick={() => handleDecrement(index, 5)} className="bg-red-600 hover:shadow-lg hover:shadow-red-600/50 text-white px-2 py-1 rounded-sm" > -5 </button> 
+          <button onClick={() => handleIncrement(index, 5)} className="bg-green-600 hover:shadow-lg hover:shadow-green-600/50 text-white px-2 py-1 rounded-sm" > +5</button> 
+          <button onClick={() => handleIncrement(index, 10)} className="bg-green-600 hover:shadow-lg hover:shadow-green-600/50 text-white px-1 py-1 rounded-sm" > +10</button> 
+          <button onClick={() => handleIncrement(index, 20)} className="bg-green-600 hover:shadow-lg hover:shadow-green-600/50 text-white px-1 py-1 rounded-sm" > +20</button> 
         </div>
-    </div>
-    <div className="mt-2 flex flex-wrap items-center justify-center space-x-2">
-      <input
-        id="cantidad"
-        type="number"
-        value={player.cantidad || 0}
-        onChange={(e) => handlePlayerChange(index, 'cantidad', e.target.value)}
-        className="mt-1 block w-20 pl-1 py-2 text-base focus:ring-indigo-500 sm:text-sm rounded-md border-2 border-gray-300 focus:border-blue-500"
-        />
-      <div className='space-x-2'>
-      <button
-        onClick={() => handleIncrement(index, player.cantidad)}
-        className="bg-green-500 text-white px-3 py-1 rounded-md"
-        >
-        💚
-      </button>
-      <button
-        onClick={() => handleDecrement(index, player.cantidad)}
-        className="bg-red-500 text-white px-3 py-1 rounded-md"
-        >
-        ⚔
-      </button>
-      </div>
     </div>
     </>
 

@@ -30,19 +30,53 @@ const Clanes = ({ player, index }) => {
           return;
         }
       
-        if (selectedClan && !newPlayers[index].clan.includes(selectedClan)) {
-          newPlayers[index].clan.push(selectedClan);
-          setPlayers(newPlayers);
-        }
+        newPlayers[index].clan.push(selectedClan);
+    if (selectedClan === 'Kaguya') {
+      newPlayers[index].armadura += 15;
+    }
+    if (selectedClan === 'Uzumaki') {
+      newPlayers[index].capvida -= 30;
+    }
+    if (selectedClan === 'Hyuga') {
+      newPlayers[index].evasion += 20;
+    }
+    if (selectedClan === 'Power') {
+      newPlayers[index].dano += 15;
+    }
+    if (selectedClan === 'Uchiha') {
+      newPlayers[index].sharinganLvl += 1;
+      newPlayers[index].evasion += 10;
+    }
+    setPlayers(newPlayers);
+    event.target.value = "";
     };
     
-      const eliminarClan = (index, clanToRemove) => {
-        const newPlayers = [...players];
-        newPlayers[index].clan = newPlayers[index].clan.filter(c => c !== clanToRemove);
+    const eliminarClan = (index, clanToRemove) => {
+      const newPlayers = [...players];
+      const clanIndex = newPlayers[index].clan.indexOf(clanToRemove);
+      if (clanIndex !== -1) {
+        newPlayers[index].clan.splice(clanIndex, 1);
+        if (clanToRemove === 'Kaguya') {
+          newPlayers[index].armadura -= 15;
+        }
+        if (clanToRemove === 'Uzumaki') {
+          newPlayers[index].capvida += 30;
+        }
+        if (clanToRemove === 'Hyuga') {
+          newPlayers[index].evasion -= 20;
+        }
+        if (clanToRemove === 'Power') {
+          newPlayers[index].dano -= 15;
+        }
+        if (clanToRemove === 'Uchiha') {
+          newPlayers[index].sharinganLvl -= 1;
+          newPlayers[index].evasion -= 10;
+        }
         setPlayers(newPlayers);
-      };
+      }
+    };
 return (
-    <div className='flex flex-wrap justify-center align-center'>
+    <div className='flex flex-wrap justify-center align-center mb-2'>
         <select
             id="clan-select"
             onChange={handleClanChange(index)}
@@ -55,8 +89,8 @@ return (
               </option>
             ))}
         </select>
-        {player.clan.map((clan) => (
-            <div key={clan} className="text-xs mt-2">
+        {player.clan.map((clan, idx) => (
+            <div key={idx} className="text-xs mt-2">
             <img
               src={clanImages[clan]}
               alt={clan}

@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import ConfirmResetSkipTurn from './modals/ConfirmResetSkipTurn';
+import PlayersContext from './PlayersContext';
+import SkipButton from './SkipButton';
 
 const SkippedTurns = () => {
-  const [pasos, setPasos] = useState(0);
+  
   const [showModal, setShowModal] = useState(false);
-
-  const incrementarPasos = () => {
-    setPasos(pasos + 1);
-  };
+  const {setPasos} = useContext(PlayersContext);
   const resetPasos = () => {
     setPasos(0);
     setShowModal(false);
@@ -21,12 +20,7 @@ const SkippedTurns = () => {
 
   return (
     <div className="flex justify-center items-center mb-2">
-        <button
-        onClick={incrementarPasos}
-        className="bg-blue-500 text-white px-2 py-1 rounded-md"
-        >
-        Pasos: {pasos}
-        </button>
+        <SkipButton message="Pasos: "/>
         <button
         onClick={handleResetClick}
         className="bg-red-500 text-white px-2 py-1 rounded-md ml-2"

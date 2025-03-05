@@ -26,8 +26,10 @@ const VictoryModal = ({ show, victoryPlayer, setShowVictory, onNewGame }) => {
         brazos: 2,
         elemento: [],
         clan: [],
+        inv: [],
         sharinganLvl: 0,
         misiones: [],
+        dInv: 0,
         defeatGif: null
       }));
       setPlayers([]); // Eliminar los datos de los jugadores
