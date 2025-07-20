@@ -45,18 +45,18 @@ const GameBoard = ({ onNewGame, handlePlayerChange }) => {
                 <h3 className="text-xl font-bold">
                   {player.name}
                 </h3>
-                <SkipButton message="+"/>
+                <SkipButton message="+" />
               </div>
               <div className="flex items-center space-x-2">
-                <AddBiju 
-                  index={index} 
-                  player={player} 
-                  handlePlayerChange={handlePlayerChange} 
+                <AddBiju
+                  index={index}
+                  player={player}
+                  handlePlayerChange={handlePlayerChange}
                 />
-                <AddInvo 
-                  index={index} 
-                  player={player} 
-                  handlePlayerChange={handlePlayerChange} 
+                <AddInvo
+                  index={index}
+                  player={player}
+                  handlePlayerChange={handlePlayerChange}
                 />
                 <PlayerOptions
                   index={index}
@@ -90,16 +90,16 @@ const GameBoard = ({ onNewGame, handlePlayerChange }) => {
                     index={index}
                   />
                 </div>
-                
+
                 <BarraDeVida
                   index={index}
                   player={player}
                   handlePlayerChange={handlePlayerChange}
                 />
-                
+
               </>
             )}
-            
+
             <MissionControls
               index={index}
               player={player}
